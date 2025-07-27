@@ -4,31 +4,52 @@ namespace Exercicio_2.Services;
 
 public class ApiService : IApiService
 {
-    private List<MarcaDto> _listaMarca = new List<MarcaDto>();
+    private readonly List<ResponseMarcaDto> _listaMarca = [];
+    private readonly List<ResponseVeiculoDto> _listVeiculo = [];
 
-    public VeiculoDto BuscarVeiculoPorId(int veiculoId)
+    public ResponseVeiculoDto BuscarVeiculoPorId(int veiculoId)
     {
         throw new NotImplementedException();
     }
 
-    public VeiculoDto SalvarVeiculo(VeiculoDto veiculo)
+    public ResponseVeiculoDto SalvarVeiculo(VeiculoDto veiculo)
+    {
+        ResponseVeiculoDto novoVeiculo = new ResponseVeiculoDto();
+        try
+        {
+            var marca = _listaMarca.FirstOrDefault(m => m.Id == veiculo.MarcaId);
+            if (marca == null)
+            {
+                throw new BadHttpRequestException("Marca não encontrada");
+            }
+
+            novoVeiculo.Id = _listVeiculo.Count + 1;    
+            novoVeiculo.Nome = veiculo.Nome;
+            novoVeiculo.Placa = veiculo.Placa;
+            novoVeiculo.Marca = marca;
+            _listVeiculo.Add(novoVeiculo);
+
+            return novoVeiculo;
+        }
+        catch (Exception e)
+        {
+            throw new ArgumentException("Erro ao salvar Veículo: " + e.Message);
+        }
+    }
+
+    public ResponseVeiculoDto DeletarVeiculo(int veiculoId)
     {
         throw new NotImplementedException();
     }
 
-    public VeiculoDto DeletarVeiculo(int veiculoId)
+    public ResponseVeiculoDto EditarVeiculo(int veiculoId)
     {
         throw new NotImplementedException();
     }
 
-    public VeiculoDto EditarVeiculo(int veiculoId)
+    public ResponseMarcaDto CadastrarMarca(MarcaDto marca)
     {
-        throw new NotImplementedException();
-    }
-
-    public MarcaDto CadastrarMarca(MarcaDto marca)
-    {
-        MarcaDto novaMarca = new MarcaDto();
+        ResponseMarcaDto novaMarca = new ResponseMarcaDto();
         try
         {
             novaMarca.Id = _listaMarca.Count + 1;

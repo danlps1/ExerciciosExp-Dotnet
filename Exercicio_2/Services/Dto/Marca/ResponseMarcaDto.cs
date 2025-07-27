@@ -2,8 +2,8 @@ using System.Text.Json.Serialization;
 
 namespace Exercicio_2.Services.Dto;
 
-public class MarcaDto
+public class ResponseMarcaDto
 {
-    [JsonIgnore] public int Id { get; set; }
+    public int Id { get; set; }
     public string Nome { get; set; } = String.Empty;
 }

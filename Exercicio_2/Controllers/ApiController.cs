@@ -16,8 +16,14 @@ public class ApiController : ControllerBase
     }
 
     [HttpPost("marca")]
-    public ActionResult<List<MarcaDto>> CadastrarMarca(MarcaDto marca)
+    public ActionResult<List<ResponseMarcaDto>> CadastrarMarca(MarcaDto marca)
     {
         return Created(string.Empty, _apiService.CadastrarMarca(marca));
+    }
+    
+    [HttpPost("veiculo")]
+    public ActionResult<List<ResponseMarcaDto>> SalvarVeiculo(VeiculoDto veiculo)
+    {
+        return Created(string.Empty, _apiService.SalvarVeiculo(veiculo));
     }
 }

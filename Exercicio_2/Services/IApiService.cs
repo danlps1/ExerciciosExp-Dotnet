@@ -4,9 +4,9 @@ namespace Exercicio_2.Services;
 
 public interface IApiService
 {
-    public VeiculoDto BuscarVeiculoPorId(int veiculoId);
-    public VeiculoDto SalvarVeiculo(VeiculoDto veiculo);
-    public VeiculoDto DeletarVeiculo(int veiculoId);
-    public VeiculoDto EditarVeiculo(int veiculoId);
-    public MarcaDto CadastrarMarca(MarcaDto marca);
+    public ResponseVeiculoDto BuscarVeiculoPorId(int veiculoId);
+    public ResponseVeiculoDto SalvarVeiculo(VeiculoDto veiculo);
+    public ResponseVeiculoDto DeletarVeiculo(int veiculoId);
+    public ResponseVeiculoDto EditarVeiculo(int veiculoId);
+    public ResponseMarcaDto CadastrarMarca(MarcaDto marca);
 }
