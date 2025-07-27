@@ -10,6 +10,7 @@ public class ApiService : IApiService
     public ResponseVeiculoDto BuscarVeiculoPorId(int veiculoId)
     {
         ResponseVeiculoDto responseVeiculo = new ResponseVeiculoDto();
+
         try
         {
             var veiculo = _listVeiculo.FirstOrDefault(v => v.Id == veiculoId);
@@ -27,6 +28,7 @@ public class ApiService : IApiService
     public ResponseVeiculoDto SalvarVeiculo(VeiculoDto veiculo)
     {
         ResponseVeiculoDto novoVeiculo = new ResponseVeiculoDto();
+
         try
         {
             var marca = _listaMarca.FirstOrDefault(m => m.Id == veiculo.MarcaId);
@@ -51,7 +53,19 @@ public class ApiService : IApiService
 
     public ResponseVeiculoDto DeletarVeiculo(int veiculoId)
     {
-        throw new NotImplementedException();
+        ResponseVeiculoDto veiculoDeletado = new ResponseVeiculoDto();
+
+        try
+        {
+            var veiculo = BuscarVeiculoPorId(veiculoId);
+            _listVeiculo.Remove(veiculo);
+
+            return veiculo;
+        }
+        catch (Exception e)
+        {
+            throw new ArgumentException("Erro ao deletar Veículo: " + e.Message);
+        }
     }
 
     public ResponseVeiculoDto EditarVeiculo(int veiculoId)
@@ -62,6 +76,7 @@ public class ApiService : IApiService
     public ResponseMarcaDto CadastrarMarca(MarcaDto marca)
     {
         ResponseMarcaDto novaMarca = new ResponseMarcaDto();
+
         try
         {
             novaMarca.Id = _listaMarca.Count + 1;
