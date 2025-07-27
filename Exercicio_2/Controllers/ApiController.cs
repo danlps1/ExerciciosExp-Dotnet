@@ -20,10 +20,16 @@ public class ApiController : ControllerBase
     {
         return Created(string.Empty, _apiService.CadastrarMarca(marca));
     }
-    
+
     [HttpPost("veiculo")]
     public ActionResult<List<ResponseMarcaDto>> SalvarVeiculo(VeiculoDto veiculo)
     {
         return Created(string.Empty, _apiService.SalvarVeiculo(veiculo));
+    }
+
+    [HttpGet("veiculo/{veiculoId}")]
+    public ActionResult<ResponseVeiculoDto> BuscarVeiculoPorId(int veiculoId)
+    {
+        return Ok(_apiService.BuscarVeiculoPorId(veiculoId));
     }
 }

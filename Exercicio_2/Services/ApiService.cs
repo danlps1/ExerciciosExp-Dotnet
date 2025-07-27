@@ -9,7 +9,19 @@ public class ApiService : IApiService
 
     public ResponseVeiculoDto BuscarVeiculoPorId(int veiculoId)
     {
-        throw new NotImplementedException();
+        ResponseVeiculoDto responseVeiculo = new ResponseVeiculoDto();
+        try
+        {
+            var veiculo = _listVeiculo.FirstOrDefault(v => v.Id == veiculoId);
+
+            responseVeiculo = veiculo ?? throw new BadHttpRequestException("Veículo não encontrado");
+
+            return responseVeiculo;
+        }
+        catch (Exception e)
+        {
+            throw new ArgumentException("Erro ao salvar Veículo: " + e.Message);
+        }
     }
 
     public ResponseVeiculoDto SalvarVeiculo(VeiculoDto veiculo)
@@ -23,7 +35,7 @@ public class ApiService : IApiService
                 throw new BadHttpRequestException("Marca não encontrada");
             }
 
-            novoVeiculo.Id = _listVeiculo.Count + 1;    
+            novoVeiculo.Id = _listVeiculo.Count + 1;
             novoVeiculo.Nome = veiculo.Nome;
             novoVeiculo.Placa = veiculo.Placa;
             novoVeiculo.Marca = marca;
