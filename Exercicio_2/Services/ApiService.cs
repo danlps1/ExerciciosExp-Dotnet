@@ -25,21 +25,21 @@ public class ApiService : IApiService
         }
     }
 
-    public ResponseVeiculoDto SalvarVeiculo(VeiculoDto veiculo)
+    public ResponseVeiculoDto SalvarVeiculo(VeiculoDto veiculoDto)
     {
         ResponseVeiculoDto novoVeiculo = new ResponseVeiculoDto();
 
         try
         {
-            var marca = _listaMarca.FirstOrDefault(m => m.Id == veiculo.MarcaId);
+            var marca = _listaMarca.FirstOrDefault(m => m.Id == veiculoDto.MarcaId);
             if (marca == null)
             {
                 throw new BadHttpRequestException("Marca não encontrada");
             }
 
             novoVeiculo.Id = _listVeiculo.Count + 1;
-            novoVeiculo.Nome = veiculo.Nome;
-            novoVeiculo.Placa = veiculo.Placa;
+            novoVeiculo.Nome = veiculoDto.Nome;
+            novoVeiculo.Placa = veiculoDto.Placa;
             novoVeiculo.Marca = marca;
             _listVeiculo.Add(novoVeiculo);
 
@@ -59,8 +59,9 @@ public class ApiService : IApiService
         {
             var veiculo = BuscarVeiculoPorId(veiculoId);
             _listVeiculo.Remove(veiculo);
+            veiculoDeletado = veiculo;
 
-            return veiculo;
+            return veiculoDeletado;
         }
         catch (Exception e)
         {
@@ -68,19 +69,41 @@ public class ApiService : IApiService
         }
     }
 
-    public ResponseVeiculoDto EditarVeiculo(int veiculoId)
+    public ResponseVeiculoDto EditarVeiculo(int veiculoId, VeiculoDto veiculoDto)
     {
-        throw new NotImplementedException();
+        ResponseVeiculoDto veiculoEditado = new ResponseVeiculoDto();
+
+        try
+        {
+            var marca = _listaMarca.FirstOrDefault(m => m.Id == veiculoDto.MarcaId);
+            if (marca == null)
+            {
+                throw new BadHttpRequestException("Marca não encontrada");
+            }
+
+            var veiculo = BuscarVeiculoPorId(veiculoId);
+
+            veiculo.Nome = veiculoDto.Nome;
+            veiculo.Placa = veiculoDto.Placa;
+            veiculo.Marca = marca;
+            veiculoEditado = veiculo;
+
+            return veiculoEditado;
+        }
+        catch (Exception e)
+        {
+            throw new ArgumentException("Erro ao editar Veículo: " + e.Message);
+        }
     }
 
-    public ResponseMarcaDto CadastrarMarca(MarcaDto marca)
+    public ResponseMarcaDto CadastrarMarca(MarcaDto marcaDto)
     {
         ResponseMarcaDto novaMarca = new ResponseMarcaDto();
 
         try
         {
             novaMarca.Id = _listaMarca.Count + 1;
-            novaMarca.Nome = marca.Nome;
+            novaMarca.Nome = marcaDto.Nome;
             _listaMarca.Add(novaMarca);
 
             return novaMarca;

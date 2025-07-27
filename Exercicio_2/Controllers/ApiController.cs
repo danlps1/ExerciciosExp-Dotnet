@@ -33,6 +33,12 @@ public class ApiController : ControllerBase
         return Ok(_apiService.BuscarVeiculoPorId(veiculoId));
     }
 
+    [HttpPut("veiuclo/{veiculoId}")]
+    public ActionResult<ResponseVeiculoDto> EditarVeiculo(int veiculoId, VeiculoDto veiculo)
+    {
+        return Ok(_apiService.EditarVeiculo(veiculoId, veiculo));
+    }
+
     [HttpDelete("veiculo/{veiculoId}")]
     public ActionResult<ResponseVeiculoDto> DeletarVeiculo(int veiculoId)
     {

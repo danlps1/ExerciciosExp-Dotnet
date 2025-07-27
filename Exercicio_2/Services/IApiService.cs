@@ -7,6 +7,6 @@ public interface IApiService
     public ResponseVeiculoDto BuscarVeiculoPorId(int veiculoId);
     public ResponseVeiculoDto SalvarVeiculo(VeiculoDto veiculo);
     public ResponseVeiculoDto DeletarVeiculo(int veiculoId);
-    public ResponseVeiculoDto EditarVeiculo(int veiculoId);
+    public ResponseVeiculoDto EditarVeiculo(int veiculoId, VeiculoDto veiculo);
     public ResponseMarcaDto CadastrarMarca(MarcaDto marca);
 }
