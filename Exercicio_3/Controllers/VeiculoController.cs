@@ -15,10 +15,23 @@ public class VeiculoController : ControllerBase
     {
         _veiculoService = veiculoService;
     }
-    
+
     [HttpPost]
     public async Task<ActionResult<Veiculo>> CadastrarVeiculo(VeiculoDto veiculo)
     {
         return Created(String.Empty, await _veiculoService.CadastrarVeiculo(veiculo));
     }
+
+    [HttpGet("{veiculoId}")]
+    public async Task<ActionResult<Veiculo>> BuscaVeiculoPorId(int veiculoId)
+    {
+        return Ok(await _veiculoService.BuscarVeiculoPorId(veiculoId));
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<Veiculo>> ListarVeiculos()
+    {
+        return Ok(await _veiculoService.ListarVeiculos());
+    }
+
 }
