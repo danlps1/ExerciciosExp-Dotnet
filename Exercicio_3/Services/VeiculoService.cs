@@ -56,14 +56,43 @@ public class VeiculoService : IVeiculoService
         }
     }
 
-    public Task<List<Veiculo>> ListarVeiculos()
+    public async Task<List<Veiculo>> ListarVeiculos()
     {
-        throw new NotImplementedException();
+        try
+        {
+            var veiculos = await _context.Veiculos
+                .Include(v => v.Marca)
+                .Include(v => v.Categoria)
+                .ToListAsync();
+
+            return veiculos;
+        }
+        catch (Exception e)
+        {
+            throw new BadHttpRequestException($"Erro ao listar veículos: {e.Message}");
+        }
     }
 
-    public Task<Veiculo> BuscarVeiculoPorId(int veiculoId)
+    public async Task<Veiculo> BuscarVeiculoPorId(int veiculoId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var veiculo = await _context.Veiculos
+                .Include(v => v.Marca)
+                .Include(v => v.Categoria)
+                .FirstOrDefaultAsync(v => v.Id == veiculoId);
+
+            if (veiculo == null)
+            {
+                throw new ArgumentException("Veículo não encontrado");
+            }
+            
+            return veiculo;
+        }
+        catch (Exception e)
+        {
+            throw new BadHttpRequestException($"Erro ao bucar veículo: {e.Message}");
+        }
     }
 
     public Task<Veiculo> EditarVeiculo(int veiculoId, VeiculoDto veiculo)
