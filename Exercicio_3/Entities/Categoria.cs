@@ -7,7 +7,7 @@ public class Categoria
 {
     public int Id { get; set; }
 
-    public CategoriaEnum TipoCategoria { get; set; }
+    [JsonConverter(typeof(JsonStringEnumConverter))] public CategoriaEnum TipoCategoria { get; set; }
 
     [JsonIgnore] public ICollection<Veiculo> Veiculos { get; set; }
 }
