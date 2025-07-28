@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Exercicio_3.Entities;
 
 public class Marca
@@ -6,5 +8,5 @@ public class Marca
     
     public string Nome { get; set; } = string.Empty;
 
-    public ICollection<Veiculo> Veiculos { get; set; }
+    [JsonIgnore] public ICollection<Veiculo> Veiculos { get; set; }
 }
