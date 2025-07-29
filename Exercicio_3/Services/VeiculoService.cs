@@ -86,12 +86,12 @@ public class VeiculoService : IVeiculoService
             {
                 throw new ArgumentException("Veículo não encontrado");
             }
-            
+
             return veiculo;
         }
         catch (Exception e)
         {
-            throw new BadHttpRequestException($"Erro ao bucar veículo: {e.Message}");
+            throw new BadHttpRequestException($"Erro ao buscar veículo: {e.Message}");
         }
     }
 
@@ -100,8 +100,20 @@ public class VeiculoService : IVeiculoService
         throw new NotImplementedException();
     }
 
-    public Task<string> DeletarVeiculo(int veiculoId)
+    public async Task<string> DeletarVeiculo(int veiculoId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var veiculo = await BuscarVeiculoPorId(veiculoId);
+
+            _context.Veiculos.Remove(veiculo);
+            await _context.SaveChangesAsync();
+
+            return "Veículo deletado com sucesso.";
+        }
+        catch (Exception e)
+        {
+            throw new BadHttpRequestException($"Erro ao deletar veículo: {e.Message}");
+        }
     }
 }
