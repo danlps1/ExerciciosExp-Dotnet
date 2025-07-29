@@ -33,7 +33,13 @@ public class VeiculoController : ControllerBase
     {
         return Ok(await _veiculoService.ListarVeiculos());
     }
-    
+
+    [HttpPut("{veiculoId}")]
+    public async Task<ActionResult<Veiculo>> EditarVeiculo(int veiculoId, [FromBody] VeiculoDto veiculo)
+    {
+        return Ok(await _veiculoService.EditarVeiculo(veiculoId, veiculo));
+    }
+
     [HttpDelete("{veiculoId}")]
     public async Task<ActionResult<string>> DeletarVeiculo(int veiculoId)
     {
