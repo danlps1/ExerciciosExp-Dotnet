@@ -1,32 +1,39 @@
 using Exercicio4.Domain.Entities;
 using Exercicio4.Domain.Interfaces;
+using Exercicio4.Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace Exercicio4.Infrastructure.Repositories;
 
 public class GradeRepository : IRepository<Grade>
 {
-    public Task SalvarAsync(Grade entity)
+    private readonly AppDbContext _context;
+
+    public GradeRepository(AppDbContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
     }
 
-    public Task<List<Grade>> ListarAsync()
+    public async Task SalvarAsync(Grade grade)
     {
-        throw new NotImplementedException();
+        _context.Grades.Add(grade);
+        await _context.SaveChangesAsync();
     }
 
-    public Task<Grade> BuscarAsync(int id)
+    public async Task<List<Grade>> ListarAsync()
     {
-        throw new NotImplementedException();
+        return await _context.Grades
+            .Include(g => g.Materias)
+            .ToListAsync();
     }
 
-    public Task EditarAsync(Grade entity)
+    public async Task<Grade> BuscarAsync(int id)
     {
-        throw new NotImplementedException();
-    }
+        var grade = await _context.Grades.SingleOrDefaultAsync(g => g.Id == id);
 
-    public Task DeletarAsync(int id)
-    {
-        throw new NotImplementedException();
+        if (grade == null)
+            throw new KeyNotFoundException($"Grade com ID {id} não encontrada.");
+
+        return grade;
     }
 }
