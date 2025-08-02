@@ -1,11 +1,12 @@
 using Exercicio4.Domain.Entities;
 using Exercicio4.Domain.Interfaces;
 using Exercicio4.Infrastructure.Database;
+using Exercicio4.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Exercicio4.Infrastructure.Repositories;
 
-public class GradeRepository : IRepository<Grade>
+public class GradeRepository : IGradeRepository
 {
     private readonly AppDbContext _context;
 
@@ -29,7 +30,9 @@ public class GradeRepository : IRepository<Grade>
 
     public async Task<Grade> BuscarAsync(int id)
     {
-        var grade = await _context.Grades.SingleOrDefaultAsync(g => g.Id == id);
+        var grade = await _context.Grades
+            .Include(g => g.Materias)
+            .SingleOrDefaultAsync(g => g.Id == id);
 
         if (grade == null)
             throw new KeyNotFoundException($"Grade com ID {id} não encontrada.");
