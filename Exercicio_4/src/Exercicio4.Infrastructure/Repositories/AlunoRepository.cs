@@ -1,11 +1,12 @@
 using Exercicio4.Domain.Entities;
 using Exercicio4.Domain.Interfaces;
 using Exercicio4.Infrastructure.Database;
+using Exercicio4.Infrastructure.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Exercicio4.Infrastructure.Repositories;
 
-public class AlunoRepository : IRepository<Aluno>
+public class AlunoRepository : IAlunoRepository
 {
     private readonly AppDbContext _context;
 
@@ -22,12 +23,16 @@ public class AlunoRepository : IRepository<Aluno>
 
     public async Task<List<Aluno>> ListarAsync()
     {
-        return await _context.Alunos.ToListAsync();
+        return await _context.Alunos
+            .Include(a => a.Grade.Materias)
+            .ToListAsync();
     }
 
     public async Task<Aluno> BuscarAsync(int id)
     {
-        var aluno = await _context.Alunos.SingleOrDefaultAsync(a => a.Id == id);
+        var aluno = await _context.Alunos
+            .Include(a => a.Grade.Materias)
+            .SingleOrDefaultAsync(a => a.Id == id);
 
         if (aluno == null)
             throw new KeyNotFoundException($"Aluno com ID {id} não encontrado.");

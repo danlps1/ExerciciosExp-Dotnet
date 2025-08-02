@@ -2,15 +2,16 @@ using Exercicio4.Application.Dtos;
 using Exercicio4.Application.Interfaces;
 using Exercicio4.Domain.Entities;
 using Exercicio4.Domain.Interfaces;
+using Exercicio4.Infrastructure.Repositories.Interfaces;
 
 namespace Exercicio4.Application.Services;
 
 public class AlunoService : IAlunoService
 {
-    private readonly IRepository<Aluno> _alunoRepository;
-    private readonly IRepository<Grade> _gradeRepository;
+    private readonly IAlunoRepository _alunoRepository;
+    private readonly IGradeRepository _gradeRepository;
 
-    public AlunoService(IRepository<Aluno> alunoRepository, IRepository<Grade> gradeRepository)
+    public AlunoService(IAlunoRepository alunoRepository, IGradeRepository gradeRepository)
     {
         _alunoRepository = alunoRepository;
         _gradeRepository = gradeRepository;
