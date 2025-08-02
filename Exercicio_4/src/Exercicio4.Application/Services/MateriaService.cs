@@ -2,14 +2,15 @@ using Exercicio4.Application.Dtos;
 using Exercicio4.Application.Interfaces;
 using Exercicio4.Domain.Entities;
 using Exercicio4.Domain.Interfaces;
+using Exercicio4.Infrastructure.Repositories.Interfaces;
 
 namespace Exercicio4.Application.Services;
 
 public class MateriaService : IMateriaService
 {
-    private readonly IRepository<Materia> _materiaRepository;
+    private readonly IMateriaRepository _materiaRepository;
 
-    public MateriaService(IRepository<Materia> materiaRepository)
+    public MateriaService(IMateriaRepository materiaRepository)
     {
         _materiaRepository = materiaRepository;
     }
