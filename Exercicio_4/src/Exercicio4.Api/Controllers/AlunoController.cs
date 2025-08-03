@@ -1,5 +1,6 @@
 using Exercicio4.Application.Dtos;
 using Exercicio4.Application.Interfaces;
+using Exercicio4.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Exercicio4.Api.Controllers;
@@ -16,20 +17,19 @@ public class AlunoController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<AlunoController>> CadastrarAluno(AlunoDto aluno)
+    public async Task<ActionResult<Aluno>> CadastrarAluno(AlunoDto aluno)
     {
         return Created(string.Empty, await _alunoService.Cadastrar(aluno));
     }
-
-    [HttpGet("{alunoId}")]
-    public async Task<ActionResult<AlunoController>> BuscarAlunoPorId(int alunoId)
+    
+    [HttpGet("historico")]
+    public async Task<ActionResult<List<Aluno>>> ExibirHistoricoAluno([FromQuery] int? alunoId)
     {
+        if (alunoId == null)
+        {
+            return Ok(await _alunoService.Listar());
+        }
+
         return Ok(await _alunoService.BuscarPorId(alunoId));
-    }
-
-    [HttpGet]
-    public async Task<ActionResult<List<AlunoController>>> ListarAlunos()
-    {
-        return Ok(await _alunoService.Listar());
     }
 }
