@@ -8,4 +8,6 @@ public class Aluno
     public string Nome { get; set; } = string.Empty;
     [JsonIgnore] public int GradeId { get; set; }
     public Grade Grade { get; set; }
+    
+    public ICollection<Nota> Notas { get; set; }
 }

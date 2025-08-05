@@ -15,11 +15,13 @@ public class AppDbContext : DbContext
 
     public DbSet<Grade> Grades { get; set; }
 
+    public DbSet<Nota> Notas { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Aluno>(entity =>
         {
-            entity.ToTable("tb_alunos");
+            entity.ToTable("tb_alunos");   
 
             entity.HasOne(a => a.Grade)
                 .WithMany(g => g.Alunos)
@@ -39,7 +41,20 @@ public class AppDbContext : DbContext
 
             entity.HasMany(g => g.Materias)
                 .WithMany(m => m.Grades)
-                .UsingEntity(j => j.ToTable("GradeMaterias"));
+                .UsingEntity(j => j.ToTable("tb_grade_materias"));
+        });
+
+        modelBuilder.Entity<Nota>(entity =>
+        {
+            entity.ToTable("tb_notas");
+
+            entity.HasOne(n => n.Aluno)
+                .WithMany(a => a.Notas)
+                .HasForeignKey(n => n.AlunoId);
+
+            entity.HasOne(n => n.Materia)
+                .WithMany(m => m.Notas)
+                .HasForeignKey(n => n.MateriaId);
         });
 
         base.OnModelCreating(modelBuilder);

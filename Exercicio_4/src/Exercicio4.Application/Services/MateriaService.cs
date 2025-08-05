@@ -1,7 +1,6 @@
 using Exercicio4.Application.Dtos;
 using Exercicio4.Application.Interfaces;
 using Exercicio4.Domain.Entities;
-using Exercicio4.Domain.Interfaces;
 using Exercicio4.Infrastructure.Repositories.Interfaces;
 
 namespace Exercicio4.Application.Services;

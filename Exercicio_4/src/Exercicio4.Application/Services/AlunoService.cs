@@ -53,11 +53,11 @@ public class AlunoService : IAlunoService
         }
     }
 
-    public async Task<Aluno> BuscarPorId(int alunoId)
+    public async Task<Aluno> BuscarPorId(int? alunoId)
     {
         try
         {
-            var aluno = await _alunoRepository.BuscarAsync(alunoId);
+            var aluno = await _alunoRepository.BuscarAsync(alunoId.Value);
             return aluno;
         }
         catch (Exception e)

@@ -7,5 +7,5 @@ public interface IAlunoService
 {
     Task<Aluno> Cadastrar(AlunoDto alunoDto);
     Task<List<Aluno>> Listar();
-    Task<Aluno> BuscarPorId(int materiaId);
+    Task<Aluno> BuscarPorId(int? alunoId);
 }

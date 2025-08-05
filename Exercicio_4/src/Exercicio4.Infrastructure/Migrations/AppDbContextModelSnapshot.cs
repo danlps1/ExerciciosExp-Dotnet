@@ -73,6 +73,32 @@ namespace Exercicio4.Infrastructure.Migrations
                     b.ToTable("tb_materias", (string)null);
                 });
 
+            modelBuilder.Entity("Exercicio4.Domain.Entities.Nota", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AlunoId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MateriaId")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Valor")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AlunoId");
+
+                    b.HasIndex("MateriaId");
+
+                    b.ToTable("tb_notas", (string)null);
+                });
+
             modelBuilder.Entity("GradeMateria", b =>
                 {
                     b.Property<int>("GradesId")
@@ -85,7 +111,7 @@ namespace Exercicio4.Infrastructure.Migrations
 
                     b.HasIndex("MateriasId");
 
-                    b.ToTable("GradeMaterias", (string)null);
+                    b.ToTable("tb_grade_materias", (string)null);
                 });
 
             modelBuilder.Entity("Exercicio4.Domain.Entities.Aluno", b =>
@@ -97,6 +123,25 @@ namespace Exercicio4.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Grade");
+                });
+
+            modelBuilder.Entity("Exercicio4.Domain.Entities.Nota", b =>
+                {
+                    b.HasOne("Exercicio4.Domain.Entities.Aluno", "Aluno")
+                        .WithMany("Notas")
+                        .HasForeignKey("AlunoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Exercicio4.Domain.Entities.Materia", "Materia")
+                        .WithMany("Notas")
+                        .HasForeignKey("MateriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Aluno");
+
+                    b.Navigation("Materia");
                 });
 
             modelBuilder.Entity("GradeMateria", b =>
@@ -114,9 +159,19 @@ namespace Exercicio4.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Exercicio4.Domain.Entities.Aluno", b =>
+                {
+                    b.Navigation("Notas");
+                });
+
             modelBuilder.Entity("Exercicio4.Domain.Entities.Grade", b =>
                 {
                     b.Navigation("Alunos");
+                });
+
+            modelBuilder.Entity("Exercicio4.Domain.Entities.Materia", b =>
+                {
+                    b.Navigation("Notas");
                 });
 #pragma warning restore 612, 618
         }
