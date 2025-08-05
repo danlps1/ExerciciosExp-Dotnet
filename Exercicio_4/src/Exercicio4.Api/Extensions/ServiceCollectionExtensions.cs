@@ -1,6 +1,6 @@
 using Exercicio4.Application.Interfaces;
 using Exercicio4.Application.Services;
-using Exercicio4.Infrastructure.Repositories;   
+using Exercicio4.Infrastructure.Repositories;
 using Exercicio4.Infrastructure.Repositories.Interfaces;
 
 public static class ServiceCollectionExtensions
@@ -10,6 +10,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IMateriaRepository, MateriaRepository>();
         services.AddScoped<IAlunoRepository, AlunoRepository>();
         services.AddScoped<IGradeRepository, GradeRepository>();
+        services.AddScoped<INotaRepository, NotaRepository>();
         return services;
     }
 
@@ -18,6 +19,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IMateriaService, MateriaService>();
         services.AddScoped<IAlunoService, AlunoService>();
         services.AddScoped<IGradeService, GradeService>();
+        services.AddScoped<INotaService, NotaService>();
         return services;
     }
 }
