@@ -9,5 +9,5 @@ public class Aluno
     [JsonIgnore] public int GradeId { get; set; }
     public Grade Grade { get; set; }
     
-    public ICollection<Nota> Notas { get; set; }
+    [JsonIgnore] public ICollection<Nota> Notas { get; set; }
 }

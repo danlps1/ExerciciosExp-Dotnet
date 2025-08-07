@@ -7,6 +7,5 @@ public class Nota
     public Aluno Aluno { get; set; }
     public int MateriaId { get; set; }
     public Materia Materia { get; set; }
-
     public double Valor { get; set; }
 }
