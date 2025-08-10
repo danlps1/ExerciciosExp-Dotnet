@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Exercicio4.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class CriandoBanco : Migration
+    public partial class Inicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,7 +57,7 @@ namespace Exercicio4.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GradeMaterias",
+                name: "tb_gradeMaterias",
                 columns: table => new
                 {
                     GradesId = table.Column<int>(type: "integer", nullable: false),
@@ -65,37 +65,77 @@ namespace Exercicio4.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GradeMaterias", x => new { x.GradesId, x.MateriasId });
+                    table.PrimaryKey("PK_tb_gradeMaterias", x => new { x.GradesId, x.MateriasId });
                     table.ForeignKey(
-                        name: "FK_GradeMaterias_tb_grades_GradesId",
+                        name: "FK_tb_gradeMaterias_tb_grades_GradesId",
                         column: x => x.GradesId,
                         principalTable: "tb_grades",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GradeMaterias_tb_materias_MateriasId",
+                        name: "FK_tb_gradeMaterias_tb_materias_MateriasId",
                         column: x => x.MateriasId,
                         principalTable: "tb_materias",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_GradeMaterias_MateriasId",
-                table: "GradeMaterias",
-                column: "MateriasId");
+            migrationBuilder.CreateTable(
+                name: "tb_notas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    AlunoId = table.Column<int>(type: "integer", nullable: false),
+                    MateriaId = table.Column<int>(type: "integer", nullable: false),
+                    Valor = table.Column<double>(type: "double precision", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tb_notas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_tb_notas_tb_alunos_AlunoId",
+                        column: x => x.AlunoId,
+                        principalTable: "tb_alunos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_tb_notas_tb_materias_MateriaId",
+                        column: x => x.MateriaId,
+                        principalTable: "tb_materias",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_tb_alunos_GradeId",
                 table: "tb_alunos",
                 column: "GradeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tb_gradeMaterias_MateriasId",
+                table: "tb_gradeMaterias",
+                column: "MateriasId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tb_notas_AlunoId",
+                table: "tb_notas",
+                column: "AlunoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tb_notas_MateriaId",
+                table: "tb_notas",
+                column: "MateriaId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "GradeMaterias");
+                name: "tb_gradeMaterias");
+
+            migrationBuilder.DropTable(
+                name: "tb_notas");
 
             migrationBuilder.DropTable(
                 name: "tb_alunos");

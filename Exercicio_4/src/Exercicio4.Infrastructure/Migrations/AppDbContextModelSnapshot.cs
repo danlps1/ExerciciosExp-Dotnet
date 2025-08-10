@@ -111,7 +111,7 @@ namespace Exercicio4.Infrastructure.Migrations
 
                     b.HasIndex("MateriasId");
 
-                    b.ToTable("tb_grade_materias", (string)null);
+                    b.ToTable("tb_gradeMaterias", (string)null);
                 });
 
             modelBuilder.Entity("Exercicio4.Domain.Entities.Aluno", b =>

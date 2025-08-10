@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using System.Text.Json;
 using Exercicio4.Application.Dtos;
 using Exercicio4.Domain.Entities;
 using Exercicio4.Test.Factory;
@@ -8,19 +7,13 @@ using FluentAssertions;
 
 namespace Exercicio4.Test;
 
-public class MateriaIntegrationTest : IClassFixture<Exercicio4WebApplicationFactory>
+public class MateriaIntegrationTest : IntegrationTestBase
 {
     private readonly HttpClient _httpClient;
 
-    public MateriaIntegrationTest(Exercicio4WebApplicationFactory factory)
+    public MateriaIntegrationTest(Exercicio4WebApplicationFactory factory) : base(factory)
     {
         _httpClient = factory.CreateClient();
-    }
-
-    private async Task CriarMateriaAsync(string nome = "Teste")
-    {
-        var materia = new MateriaDto { Nome = nome };
-        await _httpClient.PostAsJsonAsync("/api/Materia", materia);
     }
 
     [Fact]
@@ -48,7 +41,7 @@ public class MateriaIntegrationTest : IClassFixture<Exercicio4WebApplicationFact
 
         var responseData = await response.Content.ReadFromJsonAsync<List<Materia>>();
         responseData.Should().NotBeNull();
-        responseData.Should().ContainSingle("Teste");
+        responseData.Should().ContainSingle(x => x.Nome == "Teste");
     }
 
     [Fact]
@@ -56,7 +49,7 @@ public class MateriaIntegrationTest : IClassFixture<Exercicio4WebApplicationFact
     {
         await CriarMateriaAsync();
 
-        var response = await _httpClient.GetAsync($"/api/Materia/1");
+        var response = await _httpClient.GetAsync("/api/Materia/1");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 

@@ -41,7 +41,7 @@ public class AppDbContext : DbContext
 
             entity.HasMany(g => g.Materias)
                 .WithMany(m => m.Grades)
-                .UsingEntity(j => j.ToTable("tb_grade_materias"));
+                .UsingEntity(j => j.ToTable("tb_gradeMaterias"));
         });
 
         modelBuilder.Entity<Nota>(entity =>

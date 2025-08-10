@@ -7,8 +7,7 @@ using Testcontainers.PostgreSql;
 
 namespace Exercicio4.Test.Factory;
 
-public class Exercicio4WebApplicationFactory 
-    : WebApplicationFactory<Program>, IAsyncLifetime
+public class Exercicio4WebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly PostgreSqlContainer _postgresContainer;
 
@@ -25,15 +24,14 @@ public class Exercicio4WebApplicationFactory
     {
         builder.ConfigureServices(services =>
         {
-            // Remove o DbContext configurado normalmente
-            var descriptor = services.SingleOrDefault(
-                s => s.ServiceType == typeof(DbContextOptions<AppDbContext>));
+            var descriptor = services.SingleOrDefault(s =>
+                s.ServiceType == typeof(DbContextOptions<AppDbContext>));
+
             if (descriptor != null)
             {
                 services.Remove(descriptor);
             }
 
-            // Adiciona o DbContext apontando para o container PostgreSQL
             services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql(_postgresContainer.GetConnectionString()));
         });
@@ -41,7 +39,6 @@ public class Exercicio4WebApplicationFactory
 
     public async Task InitializeAsync()
     {
-        // Sobe o container antes de qualquer teste
         await _postgresContainer.StartAsync();
 
         // Aplica migrations
