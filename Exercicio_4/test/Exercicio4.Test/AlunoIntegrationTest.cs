@@ -28,7 +28,7 @@ public class AlunoIntegrationTest : IntegrationTestBase
         var responseData = await response.Content.ReadFromJsonAsync<Aluno>();
         responseData.Should().NotBeNull();
         responseData.Nome.Should().Be("Teste");
-        responseData.GradeId.Should().BeGreaterThan(0);
         responseData.Id.Should().BeGreaterThan(0);
+        responseData.Grade.Id.Should().BeGreaterThan(0);
     }
 }
