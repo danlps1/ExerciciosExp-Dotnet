@@ -31,4 +31,19 @@ public class AlunoIntegrationTest : IntegrationTestBase
         responseData.Id.Should().BeGreaterThan(0);
         responseData.Grade.Id.Should().BeGreaterThan(0);
     }
+    
+    [Fact]
+    public async Task Deve_Exibir_Historico_Alunos_Sucesso()
+    {
+        await CriarAlunoAsync();
+        await CriarAlunoAsync();
+
+        var response = await _httpClient.GetAsync("/api/Aluno/historico");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var responseData = await response.Content.ReadFromJsonAsync<List<Aluno>>();
+        responseData.Should().NotBeNull();
+        responseData.Count.Should().Be(2);
+        responseData[0].Id.Should().BeGreaterThan(0);
+    }
 }
