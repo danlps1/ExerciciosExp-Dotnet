@@ -46,4 +46,24 @@ public class AlunoIntegrationTest : IntegrationTestBase
         responseData.Count.Should().Be(2);
         responseData[0].Id.Should().BeGreaterThan(0);
     }
+
+    [Fact]
+    public async Task Deve_Exibir_Historico_Unico_Aluno_Sucesso()
+    {
+        var aluno1 = await CriarAlunoAsync();
+        var aluno2 = await CriarAlunoAsync();
+
+        var response = await _httpClient.GetAsync($"api/Aluno/historico?{aluno1.Id}");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var responseData = await response.Content.ReadFromJsonAsync<List<Aluno>>();
+        responseData.Should().NotBeNull();
+        
+        var alunoResponse = responseData.FirstOrDefault(a => a.Id == aluno1.Id);
+        alunoResponse.Should().NotBeNull();
+        alunoResponse.Nome.Should().Be(aluno1.Nome);
+        alunoResponse.Id.Should().BeGreaterThan(0);
+        alunoResponse.Grade.Id.Should().BeGreaterThan(0);
+        alunoResponse.Grade.Materias.Count.Should().BeGreaterThanOrEqualTo(5);
+    }
 }
