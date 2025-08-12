@@ -17,7 +17,7 @@ public class GradeIntegrationTest : IntegrationTestBase
     }
 
     [Fact]
-    public async Task Deve_Cadastrar_Grade()
+    public async Task Deve_Cadastrar_Grade_Sucesso()
     {
         for (int i = 0; i < 5; i++) await CriarMateriaAsync();
 
@@ -44,5 +44,19 @@ public class GradeIntegrationTest : IntegrationTestBase
         responseData.Should().NotBeNull();
         responseData.Count.Should().BeGreaterThan(0);
         responseData.Should().ContainSingle(g => g.Id == grade.Id);
+    }
+    
+    [Fact] 
+    public async Task Deve_Buscar_Grade_Por_Id_Sucesso()
+    {
+        var grade = await CriarGradeAsync();
+
+        var response = await _httpClient.GetAsync($"api/Grade/{grade.Id}");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var responseData = await response.Content.ReadFromJsonAsync<Grade>();
+        responseData.Should().NotBeNull();
+        responseData.Id.Should().BeGreaterThan(0);
+        responseData.Materias.Count.Should().BeGreaterThanOrEqualTo(5);
     }
 }
