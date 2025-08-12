@@ -31,4 +31,18 @@ public class GradeIntegrationTest : IntegrationTestBase
         responseData.Materias.Count.Should().BeGreaterThanOrEqualTo(5);
         responseData.Id.Should().BeGreaterThan(0);
     }
+
+    [Fact] 
+    public async Task Deve_Listar_Grades_Sucesso()
+    {
+        var grade = await CriarGradeAsync();
+
+        var response = await _httpClient.GetAsync("api/Grade");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var responseData = await response.Content.ReadFromJsonAsync<List<Grade>>();
+        responseData.Should().NotBeNull();
+        responseData.Count.Should().BeGreaterThan(0);
+        responseData.Should().ContainSingle(g => g.Id == grade.Id);
+    }
 }
